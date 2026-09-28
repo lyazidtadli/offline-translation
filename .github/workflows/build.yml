@@ -8,8 +8,12 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.22.0'
-      - run: flutter create . --project-name offline_translation --platforms android --overwrite
       - run: |
+          cp lib/main.dart /tmp/myapp.dart
+          cp pubspec.yaml /tmp/pub.yaml || true
+          flutter create . --project-name offline_translation --platforms android --overwrite
+          mv /tmp/myapp.dart lib/main.dart
+          mv /tmp/pub.yaml pubspec.yaml || true
           echo "flutter.minSdkVersion=24" >> android/local.properties
           sed -i 's/minSdkVersion flutter.minSdkVersion/minSdkVersion 24/g' android/app/build.gradle
           sed -i 's/minSdkVersion 21/minSdkVersion 24/g' android/app/build.gradle
