@@ -12,7 +12,7 @@ jobs:
       - name: Fix project
         run: |
           cp lib/main.dart /tmp/m.dart
-          flutter create. --platforms=android --project-name offline_translation
+          flutter create . --platforms=android --project-name offline_translation
           cp /tmp/m.dart lib/main.dart
           flutter pub add permission_handler
       - run: flutter build apk --release
