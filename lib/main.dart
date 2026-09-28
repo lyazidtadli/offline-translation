@@ -1,24 +1,42 @@
 import 'package:flutter/material.dart';
-void main() => runApp(MaterialApp(home: MyApp(), debugShowCheckedModeBanner: false));
-class MyApp extends StatefulWidget {
-  @override
-  State<MyApp> createState() => _MyAppState();
+void main()=>runApp(MyApp());
+class MyApp extends StatefulWidget{
+@override State<MyApp> createState()=>_MyAppState();
 }
-class _MyAppState extends State<MyApp> {
-  final c = TextEditingController();
-  String r = "";
-  bool en = true;
-  Map<String,String> d = {"hello":"bonjour","thank you":"merci","yes":"oui","no":"non","water":"eau","food":"nourriture","house":"maison","friend":"ami","love":"amour","book":"livre","time":"temps","day":"jour","night":"nuit"};
-  late Map<String,String> rev;
-  @override
-  void initState(){ super.initState(); rev = d.map((k,v)=>MapEntry(v,k)); }
-  void tr(){ String i=c.text.trim().toLowerCase(); if(i.isEmpty)return; setState((){ r=en? (d[i]??"Not found offline") : (rev[i]??"Non trouvé"); }); }
-  @override
-  Widget build(BuildContext context){
-    return Scaffold(
-      appBar: AppBar(title: Text("Offline EN-FR"), centerTitle: true),
-      body: Padding(padding: EdgeInsets.all(20), child: Column(children:[
-        Row(mainAxisAlignment: MainAxisAlignment.center, children:[Text(en?"EN":"FR"), Switch(value: en, onChanged: (v)=>setState(()=>en=v)), Text(en?"FR":"EN")]),
-        TextField(controller: c, decoration: InputDecoration(border: OutlineInputBorder(), labelText: "Enter word")),
-        SizedBox(height:15),
-        ElevatedButton(onPressed: tr, child: Text("Translate Offline"), style: ElevatedButton.styleFrom(min
+class _MyAppState extends State<MyApp>{
+final c=TextEditingController();
+String r="";
+Map<String,Map<String,String>> d={
+"hello":{"ar":"مرحبا","fr":"bonjour","es":"hola"},
+"thanks":{"ar":"شكرا","fr":"merci","es":"gracias"},
+"water":{"ar":"ماء","fr":"eau","es":"agua"},
+};
+String t="ar";
+void tr(){
+String i=c.text.toLowerCase().trim();
+if(d.containsKey(i)){setState(()=>r=d[i]![t]!);}else{setState(()=>r="جرب: hello, thanks, water");}
+}
+@override Widget build(BuildContext context){
+return MaterialApp(
+home:Scaffold(
+appBar:AppBar(title:Text("ترجم بلا أنترنت"),backgroundColor:Colors.teal),
+body:Padding(
+padding:EdgeInsets.all(20),
+child:Column(children:[
+TextField(controller:c,decoration:InputDecoration(labelText:"English word",border:OutlineInputBorder())),
+SizedBox(height:10),
+Row(mainAxisAlignment:MainAxisAlignment.spaceEvenly,children:[
+ChoiceChip(label:Text("عربية"),selected:t=="ar",onSelected:(v){setState(()=>t="ar");}),
+ChoiceChip(label:Text("فرنسية"),selected:t=="fr",onSelected:(v){setState(()=>t="fr");}),
+ChoiceChip(label:Text("إسبانية"),selected:t=="es",onSelected:(v){setState(()=>t="es");}),
+]),
+SizedBox(height:20),
+ElevatedButton(onPressed:tr,child:Text("Translate Offline"),style:ElevatedButton.styleFrom(minimumSize:Size(double.infinity,50))),
+SizedBox(height:30),
+Text(r,style:TextStyle(fontSize:28,fontWeight:FontWeight.bold)),
+]),
+),
+),
+);
+}
+}
