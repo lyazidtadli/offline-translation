@@ -1,9 +1,9 @@
 name: offline_translation
-description: Offline Translation EN FR
+description: Offline Translation app - English French translator works without internet
 publish_to: 'none'
 version: 1.0.0+1
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: '>=3.0.0 <4.0.0'
 dependencies:
   flutter:
     sdk: flutter
