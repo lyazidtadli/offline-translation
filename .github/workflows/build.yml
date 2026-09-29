@@ -8,6 +8,12 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
+      - name: Generate android folder
+        run: flutter create . --platforms=android
+      - name: Restore our files
+        run: |
+          git checkout -- lib/main.dart
+          git checkout -- pubspec.yaml
       - run: flutter pub get
       - run: flutter build apk --release
       - uses: actions/upload-artifact@v4
